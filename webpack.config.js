@@ -23,9 +23,7 @@ module.exports = { //exporting objects
     },
     devtool: 'cheap-module-eval-source-map',//takes you to original file bundler
     devServer: {
-        //running server....create a server and then checks the contents of the file
-        inline:false,
-    //    historyApiFallBack: true
+   historyApiFallback: true,
         contentBase: path.join(__dirname, 'public'),
     }
 };

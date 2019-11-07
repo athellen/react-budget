@@ -6,6 +6,6 @@ import 'normalize.css/normalize.css';
 import './styles/styles.scss';
 
 
-ReactDOM.rende(<AppRouter /> , document.getElementById('app'));
+ReactDOM.render(<AppRouter /> , document.getElementById('app'));
 
 
