@@ -6,6 +6,14 @@ const person = {
         temp: 95
     }
 };
+var payload = {
+    incrementBy: 7
+}
+console.log(payload.incrementBy);
+
+var { incrementBy } = payload;
+console.log(incrementBy);
+const {name} = person;
 // console.log(person.location.temp);
 const { temp, city } = person.location;
 // console.log(temp);
