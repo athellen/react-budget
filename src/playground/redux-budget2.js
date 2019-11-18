@@ -112,6 +112,26 @@ const filtersReducer = (state = filtersReducerDefaultState, action) => {
       return state;
   }
 };
+const getVisibleExpenses = (expenses, { text, sortBy, startDate, endDate }) => {
+  return expenses
+    .filter(expense => {
+      const startDateMatch =
+        typeof startDate !== "number" || expense.createdAt >= startDate;
+      const endDateMatch =
+        typeof endDate !== "number" || expense.createdAt <= endDate;
+      const textMatch = expense.description
+        .toLowerCase()
+        .includes(text.toLowerCase());
+      return startDateMatch && endDateMatch && textMatch;
+    })
+    .sort((a, b) => {
+      if (sortBy === "date") {
+        return a.createdAt < b.createdAt ? 1 : -1;
+      } else if (sortBy === "amount") {
+        return a.amount < b.amount ? 1 : -1;
+      }
+    });
+};
 
 //store creation
 const store = createStore(
@@ -121,6 +141,11 @@ const store = createStore(
   })
 );
 store.subscribe(() => {
+  const state = store.getState();
+  const VisibleExpenses = getVisibleExpenses(state.expenses, state.filters);
+  console.log(VisibleExpenses);
+});
+store.subscribe(() => {
   console.log(store.getState());
 });
 const expenseOne = store.dispatch(
@@ -129,11 +154,22 @@ const expenseOne = store.dispatch(
 const expenseTwo = store.dispatch(
   addExpense({ description: "coffee", amount: 500 })
 );
-store.dispatch(removeExpense({ id: expenseOne.expense.id }));
-store.dispatch(
-  editExpense(expenseTwo.expense.id, { amount: 1500, description: "Travel" })
+const expenseThree = store.dispatch(
+  addExpense({ description: "chocolate", amount: 800, createdAt: 7000 })
 );
+const expenseFour = store.dispatch(
+  addExpense({ description: "Fennel", amount: 700, createdAt: 11000 })
+);
+//store.dispatch(setTextFilter("fe"));
 store.dispatch(sortByAmount());
-store.dispatch(setTextFilter("coffee"));
-store.dispatch(setStartDate(1000));
-store.dispatch(setEndDate(2500));
+store.dispatch(sortByDate());
+//Get visible expenses(Selectors)to filter
+
+//store.dispatch(removeExpense({ id: expenseOne.expense.id }));
+// store.dispatch(
+//   editExpense(expenseTwo.expense.id, { amount: 1500, description: "Travel" })
+// );
+// store.dispatch(sortByAmount());
+// store.dispatch(setTextFilter("coffee"));
+// store.dispatch(setStartDate(1000));
+// store.dispatch(setEndDate(2500));
