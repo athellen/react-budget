@@ -160,13 +160,13 @@ const expenseThree = store.dispatch(
 const expenseFour = store.dispatch(
   addExpense({ description: "Fennel", amount: 700, createdAt: 11000 })
 );
-//store.dispatch(setTextFilter("fe"));
-store.dispatch(sortByAmount());
-store.dispatch(sortByDate());
+store.dispatch(setTextFilter("fe"));
+// store.dispatch(sortByAmount());
+// store.dispatch(sortByDate());
 //Get visible expenses(Selectors)to filter
 
-//store.dispatch(removeExpense({ id: expenseOne.expense.id }));
-// store.dispatch(
+// store.dispatch(removeExpense({ id: expenseOne.expense.id }));
+// // store.dispatch(
 //   editExpense(expenseTwo.expense.id, { amount: 1500, description: "Travel" })
 // );
 // store.dispatch(sortByAmount());

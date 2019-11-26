@@ -20,7 +20,7 @@ export default (state = filtersReducerDefaultState, action) => {
     case "SORT_BY_DATE":
       return {
         ...state,
-        startDate: action.startDate
+        sortBy: "date"
       };
     case "SET_START_DATE":
       return {
