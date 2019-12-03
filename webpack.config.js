@@ -3,7 +3,7 @@ const path = require("path"); //to read path we have in file
 // const webpack = require("webpack")
 module.exports = {
   //exporting objects
-  entry: "./src/app.js", //to bundle app.js and produce output
+  entry: "./src/playground/redux-101.js", //to bundle app.js and produce output
   output: {
     //produce output
     path: path.join(__dirname, "public"), //create a key called path and joins them together to be able to read and puts them in a folder public
