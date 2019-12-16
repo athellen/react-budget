@@ -1,20 +1,21 @@
-import * as firebase from 'firebase';
+import * as firebase from "firebase";
 
 var firebaseConfig = {
-    apiKey: "AIzaSyChXLo-GQeyqM6uUFb9Gg0zouDhFJ_aPBs",
-    authDomain: "budget-59aea.firebaseapp.com",
-    databaseURL: "https://budget-59aea.firebaseio.com",
-    projectId: "budget-59aea",
-    storageBucket: "budget-59aea.appspot.com",
-    messagingSenderId: "911274901534",
-    appId: "1:911274901534:web:d0ab5bf9886a442dd96e0f"
-  };
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.FIREBASE_DATABASE_URL,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_APP_ID
+};
 
-  firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 //   firebase.database().ref().set({
 //       name: 'Hillary Clinton'
 //   });
 const database = firebase.database();
+const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 // database.ref().set({
 //     name: 'Alia Bhatt',
 //     location: {
@@ -56,4 +57,4 @@ const database = firebase.database();
 //     createdAt: 976123498763
 // });
 
-export { firebase, database as default};
+export { firebase, googleAuthProvider, database as default };

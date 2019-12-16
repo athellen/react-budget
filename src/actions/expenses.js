@@ -31,11 +31,13 @@ export const startAddExpense = (expenseData = {}) => {
 };
 
 //remove_expense
+//only removes from the browser and not database
 export const removeExpense = (expense = {}) => ({
   type: "REMOVE_EXPENSE",
   id: expense.id
 });
 
+//removes from the database
 export const startRemoveExpense = ({ id } = {}) => {
   return dispatch => {
     return database
@@ -53,6 +55,16 @@ export const editExpense = (id, updates) => ({
   updates
 });
 
+export const startEditExpense = (id, updates) => {
+  return dispatch => {
+    return database
+      .ref(`expenses/${id}`)
+      .update(updates)
+      .then(() => {
+        dispatch(editExpense(id, updates));
+      });
+  };
+};
 //SET EXPENSES
 export const setExpenses = expenses => ({
   type: "SET_EXPENSES",
@@ -62,7 +74,7 @@ export const setExpenses = expenses => ({
 export const startSetExpenses = () => {
   return dispatch => {
     return database
-      .ref("expenses")
+      .ref("expenses") //fetching expenses from the database
       .once("value")
       .then(snapshot => {
         const expenses = [];
