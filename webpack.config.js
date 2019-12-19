@@ -3,6 +3,8 @@ const path = require("path"); //to read path we have in file
 // const webpack = require("webpack")
 const webpack = require("webpack");
 
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+
 process.env.NODE_ENV = process.env.NODE_ENV || "development";
 
 if (process.env.NODE_ENV === "development") {
@@ -10,13 +12,14 @@ if (process.env.NODE_ENV === "development") {
 }
 
 module.exports = env => {
-  console.log(env);
+  const isProduction = env === "production";
+  const CSSExtract = new ExtractTextPlugin("styles.css");
   return {
     //exporting objects
     entry: "./src/app.js", //to bundle app.js and produce output
     output: {
       //produce output
-      path: path.join(__dirname, "public"), //create a key called path and joins them together to be able to read and puts them in a folder public
+      path: path.join(__dirname, "public", "dist"), //create a key called path and joins them together to be able to read and puts them in a folder public
       filename: "bundle.js" //creaete a new file
     },
     module: {
@@ -29,12 +32,28 @@ module.exports = env => {
         },
         {
           test: /\.s?css$/, //scss another framework ?means or
-          use: ["style-loader", "css-loader", "sass-loader"]
+          use: CSSExtract.extract({
+            use: [
+              {
+                loader: "css-loader",
+                options: {
+                  sourceMap: true
+                }
+              },
+              {
+                loader: "sass-loader",
+                options: {
+                  sourceMap: true
+                }
+              }
+            ]
+          })
         }
       ]
     },
 
     plugins: [
+      CSSExtract,
       new webpack.DefinePlugin({
         "process.env.FIREBASE_API_KEY": JSON.stringify(
           process.env.FIREBASE_API_KEY
@@ -59,10 +78,11 @@ module.exports = env => {
         )
       })
     ],
-    devtool: "cheap-module-eval-source-map", //takes you to original file bundler
+    devtool: isProduction ? "sourceMap" : "inline-source-map",
     devServer: {
+      contentBase: path.join(__dirname, "public"),
       historyApiFallback: true,
-      contentBase: path.join(__dirname, "public")
+      publicPath: "/dist/"
     }
   };
 };
